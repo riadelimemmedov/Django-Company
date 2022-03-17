@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Home Page{% endblock title %}
+
+{% block content %}
+    <div class="col-6 mx-auto m-5">
+        <div class="text-center text-white h1 text-capitalize">Welcome to improveo</div>
+        {% if request.user.is_authenticated %}
+            <div class="text-center text-white h4 mb-5">Select a production line to begin</div>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form|crispy}}<!-- defaultdaki form deyeridiri yeni form kimi qeyd eleyir django template gelendeki datani -->
+                <input type="hidden" name="prod_line" id="productionlineId">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        {% else %}  
+            <div class="text-white text-center text-capitalize h3">Login to begin</div>
+        {% endif %}
+    </div>
+
+    <script type="text/javascript">
+        $('#div_id_production_line').on('change',function(){
+            const pl = $('#id_production_line option:selected').text()
+            console.log(pl)
+            $('#productionlineId').val(pl)
+        })
+    </script>
+    
+{% endblock content %}

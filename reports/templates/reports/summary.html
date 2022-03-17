@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Summary Page{% endblock title %}
+
+{% block content %}
+
+    <h1 class="text-white ml-5 d-inline">Reports : {{report_qs_day_prod_id}}</h1> <span class="text-danger ml-1 h1">; Planned : {{planned_qs}}</span>
+
+{% endblock content %}

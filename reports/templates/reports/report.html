@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %} Report {% endblock title %}
+
+{% block content %}
+
+    
+    <!-- Modal -->
+    <div class="modal fade" id="problemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Report Problems</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+
+            <!-- !Problem Reported button class btn btn-warning olan burdan yazaciyig her bir mala uygun problemi -->
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    {{pform|crispy}}
+                    <input type="hidden" name="report_id" id="report_id">
+                </div>  
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="submitbtn1" class="btn btn-primary">Send</button><!-- eger form icinde button yazirsansa ve bu formun method deyeri POST dursa bu formu gondermek ucun lazim olan butonun type deyeri mutleq sekilde submit olmalidir yeni => type="submit" -->
+                </div>
+            </form>
+            <!-- !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+            
+        </div>
+        </div>
+    </div>
+
+
+
+    <div class="container bg-white shadow-lg rounded py-2">
+        <div class="row">
+
+            <!-- !ReportedForm -->
+            <div class="col-2">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{rform|crispy}}
+                    <button type="submit" name="submitbtn2" class="btn btn-primary w-100 shadow-sm mt-3">
+                        <i class="far fa-paper-plane pr-3"></i>
+                        Send
+                    </button><!-- eger form icinde buton yazirsansa bu butonun type deyeri mutleq sekilde submit olmalidir cunki form ile data gonderilir,yadda saxla form icinde buton yazilirsa ve formun method deyeri POST dursa bu zamannin butonun type deyeri submit olmalidir -->
+                </form>
+            </div>
+            <!-- !xxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+            <div class="col-10">
+                <div style="overflow-y:auto;height: 85vh;" class="w-100 bg-light rounded border">
+                    <table class="table">
+
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th scope="col">Day</th>
+                                <th scope="col">Start</th>
+                                <th scope="col">End</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Plan</th>
+                                <th scope="col">Execution</th>
+                                <th scope="col">Line</th>
+                                <th scope="col">Problems</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for report in reports %}
+                                <tr class="text-center">
+                                    <td>{{report.get_day}}</td>
+                                    <td>{{report.start_hour}}</td>
+                                    <td>{{report.end_hour}}</td>
+                                    <td>{{report.product}}</td>
+                                    <td>{{report.plan}}</td>
+                                    <td>{{report.execute}}</td>
+                                    <td>{{report.production_line}}</td>
+                                    
+
+                                    <!-- ?Reported button -->
+                                    <td class="fit">
+                                        <button class="btn btn-warning open-modal" data-toggle="modal" data-target="#problemModal" data-url="{{report.id}}">
+                                            <i class="fas fa-exclamation-triangle"></i>
+                                        </button>
+                                    </td>
+                                    <!-- ?xxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+                                    <td class="fit">
+                                        <a href="{{report.get_absolute_url}}">
+                                            <button class="btn btn-info">
+                                                <i class="far fa-edit"></i>
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                    <td class="fit">
+                                        <a href="{% url 'pform:deleteView' pk=report.id %}">
+                                            <button class="btn btn-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        $('.open-modal').on('click',function(){
+            const r_id = $(this).attr('data-url')//this yazilmasindaki sebeb tikladigim butonun id deyerini almag dir
+            $('#report_id').val(r_id)
+            console.log(r_id)
+            
+            let a = $('#report_id').val()
+            console.log(a)
+        })
+    </script>
+
+{% endblock content %}
