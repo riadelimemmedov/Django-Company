@@ -102,7 +102,7 @@ class SelectView(FormView):
     
     def form_valid(self,form):
         self.request.session['day'] = self.request.POST.get('day',None)
-        self.request.session['production_line'] = self.request.POST.get('production_line',None)
+        self.request.session['production_line'] = self.request.POST.get('production_line',None)#burdaki deyer crispy formdan gelir
         print('My session date', self.request.session['day'])
         return super(SelectView,self).form_valid(form)
 
@@ -113,10 +113,12 @@ def main_report_summary(request):
         #session data
         day = request.session.get('day',None)
         production_line_id = request.session.get('production_line',None)#return id
+        print(production_line_id)
         
         #database filtering session data
-        execution_qs = Report.objects.filter_by_day_prodid(day,production_line_id).aggregate_execution()['execute__sum']
-        planned_qs = Report.objects.filter_by_day_prodid(day,production_line_id).aggregate_plan()['plan__sum']
+        execution_qs = Report.objects.filter_by_day_prodid(day,production_line_id).aggregate_execution()['execute__avg']
+        planned_qs = Report.objects.filter_by_day_prodid(day,production_line_id).aggregate_plan()['plan__avg']
+        production_item = ProductionLine.objects.get(id=production_line_id)
         
         print(execution_qs)
         print(planned_qs)
@@ -134,8 +136,9 @@ def main_report_summary(request):
     
     context = {
         'day':day,
-        'report_qs_day_prod_id':execution_qs,
-        'planned_qs':planned_qs
+        'execution_qs':execution_qs,
+        'planned_qs':planned_qs,
+        'production_item':production_item
     }
     
     return render(request,'reports/summary.html',context)

@@ -5,7 +5,7 @@ import random
 from categories.models import *
 from products.models import *
 from django.urls import reverse
-from django.db.models import Sum
+from django.db.models import Sum,Avg
 from areas.models import *
 
 # Create your models here.
@@ -25,10 +25,10 @@ class ReportQueryset(models.QuerySet):
         return self.filter(day=day,production_line__id=prod_id)
     
     def aggregate_execution(self):
-        return self.aggregate(Sum('execute'))
+        return self.aggregate(Avg('execute'))
     
     def aggregate_plan(self):
-        return self.aggregate(Sum('plan'))
+        return self.aggregate(Avg('plan'))
 
 #!ReportManager
 class ReportManager(models.Manager):

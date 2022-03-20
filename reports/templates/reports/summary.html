@@ -1,10 +1,41 @@
 {% extends "base.html" %}
 {% load static %}
+{% load oknok %}
+{% load subtract %}
 
 {% block title %}Summary Page{% endblock title %}
 
 {% block content %}
+    <div class="container bg-white py-2 rounded">
+        <div class="col-12">    
+            <div class="text-muted h2">
+                <i class="fas fa-tachometer-alt mr-3"></i>Results
+            </div>
+        </div>
+        <div class="col"><!-- col classi ele beraberdir col-12 e cunki ekrani ele 1 e bolduk cunki colun yanindan deyer yoxdur meselen col-2 olsaydi 12 bol 2 = 6 ve 6 lig bolerdi bir seyi yadda saxlaki bootstrap ekrani 12 lik tutur,diger cox framework ise 16 isleyir grid systemde -->
+            Summary Of: <strong>{{day}} - {{production_item}} </strong>
+        </div>
+        <br>
+        <table class="table table-sm text-center">
 
-    <h1 class="text-white ml-5 d-inline">Reports : {{report_qs_day_prod_id}}</h1> <span class="text-danger ml-1 h1">; Planned : {{planned_qs}}</span>
+            <thead>
+                <tr>
+                    <th scope="col">Plan</th>
+                    <th scope="col">Execution</th>
+                    <th scope="col">Difference</th>
+                    <th scope="col">OK?</th>
+                </tr>
+            </thead>
 
+            <tbody>
+                <tr>
+                    <td>{{planned_qs}}</td>
+                    <td>{{execution_qs}}</td>
+                    <td>{{execution_qs|subtract:planned_qs}}</td>
+                    <td>{{execution_qs|oknok:planned_qs}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
 {% endblock content %}
