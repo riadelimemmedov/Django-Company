@@ -6,7 +6,7 @@
 {% block title %}Summary Page{% endblock title %}
 
 {% block content %}
-    <div class="container bg-white py-2 rounded">
+    <div class="container bg-white py-2 mt-5 rounded">
         <div class="col-12">    
             <div class="text-muted h2">
                 <i class="fas fa-tachometer-alt mr-3"></i>Results
@@ -37,5 +37,14 @@
             </tbody>
 
         </table>
+        <br>
+        <h3>Problems</h3>
+        {% for problem in problem_reports %}
+            <small class="text-muted">{{problem.problem_id}}</small><br>
+            {{problem.category}}<br>
+            {{problem.description}}<br>
+            {{problem.breakdown}} min<br>
+            <hr>
+        {% endfor %}
     </div>
 {% endblock content %}

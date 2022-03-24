@@ -1,0 +1,13 @@
+cssselect2-0.5.0.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+cssselect2-0.5.0.dist-info/LICENSE,sha256=b9lyKaHRsPaotB4Qn0E0JtvAh0seA3RtZswzKCYBwsI,1548
+cssselect2-0.5.0.dist-info/METADATA,sha256=rvPyo92JW4LEKPdH-NjYlKMgd95EgtHnnE1OrHvMnVE,2997
+cssselect2-0.5.0.dist-info/RECORD,,
+cssselect2-0.5.0.dist-info/WHEEL,sha256=4TfKIB_xu-04bc2iKz6_zFt-gEFEEDU_31HGhqzOCE8,81
+cssselect2/__init__.py,sha256=mdnCqK8k7G6z9vY6c3yorRE9u-jKb90FgNS7xlnfszo,4453
+cssselect2/__pycache__/__init__.cpython-39.pyc,,
+cssselect2/__pycache__/compiler.cpython-39.pyc,,
+cssselect2/__pycache__/parser.cpython-39.pyc,,
+cssselect2/__pycache__/tree.cpython-39.pyc,,
+cssselect2/compiler.py,sha256=v0iCLJB-PJYP6uEcYD15Gp46v3j7PthEalb1eu9HxLw,18002
+cssselect2/parser.py,sha256=Bk4nvsJT08Dlb5w5wLCurZXGBNVHwni-W_m8mnBaig4,14896
+cssselect2/tree.py,sha256=LE6VEMLOdzGPzjI4NBxVs6MVOVbaIMvnMPqZ63hJcDw,12603

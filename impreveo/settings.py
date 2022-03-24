@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'reports',
     'products',
     'areas',
-    'categories'
+    'categories',
+    'posts',
 ]
 
 MIDDLEWARE = [

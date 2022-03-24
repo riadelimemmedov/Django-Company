@@ -5,11 +5,11 @@
 {% block title %}Home Page{% endblock title %}
 
 {% block content %}
-    <div class="col-6 mx-auto m-5">
-        <div class="text-center text-white h1 text-capitalize">Welcome to improveo</div>
+    <div class="col-6 mx-auto p-5">
+        <div class="text-center text-white h1 mb-5 text-capitalize">Welcome to improveo</div>
         {% if request.user.is_authenticated %}
-            <div class="text-center text-white h4 mb-5">Select a production line to begin</div>
-            <form action="" method="POST">
+            <form action="" class="form-control" method="POST">
+                <div class="text-muted h5 mb-2">Select a production line to begin</div>
                 {% csrf_token %}
                 {{form|crispy}}<!-- defaultdaki form deyeridiri yeni form kimi qeyd eleyir django template gelendeki datani -->
                 <input type="hidden" name="prod_line" id="productionlineId">

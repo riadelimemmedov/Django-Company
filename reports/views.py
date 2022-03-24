@@ -1,14 +1,54 @@
 from multiprocessing import context
 from django.shortcuts import render,get_object_or_404,redirect
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from .forms import *
 from areas.models import *
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+
 from django.views.generic import *
 from .models import *
 
 # Create your views here.
+
+#!get_generated_problems_in_pdf
+# def get_generated_problems_in_pdf(request):
+    
+#     # queryset
+#     problems = ProblemReported.objects.problems_from_today()
+
+#     # context passed in the template
+#     context = {'problems': problems}
+
+#     # render
+#     html_string = render_to_string(
+#         'reports/problems.html',context)
+#     html = HTML(string=html_string)
+#     result = html.write_pdf()
+
+#     # http response
+#     import os
+
+#     os.add_dll_directory(r"C:\Program Files\GTK3-Runtime Win64\bin")
+
+#     from weasyprint import HTML
+
+#     HTML('https://weasyprint.org/').write_pdf('weasyprint-website.pdf')
+#     response = HttpResponse(content_type='application/pdf;')
+#     response['Content-Disposition'] = 'inline; filename=problem_list.pdf'
+#     response['Content-Transfer-Encoding'] = 'binary'
+#     with tempfile.NamedTemporaryFile(delete=True) as output:
+#         output.write(result)
+#         output.flush()
+#         output = open(output.name, 'rb')
+#         response.write(output.read())
+
+#     return response
+
+
 
 #!ReportView
 @login_required
@@ -63,6 +103,7 @@ def reportView(request,production_line):
     }
     return render(request,'reports/report.html',context)
 
+@login_required
 #!DeleteView for ReportDelete
 def deleteView(request,*args,**kwargs):
     r_id = kwargs.get('pk')
@@ -71,7 +112,7 @@ def deleteView(request,*args,**kwargs):
     return redirect(request.META.get('HTTP_REFERER'))
 
 #!UpdateView for ReportUpdate
-class ReportUpdatView(UpdateView):
+class ReportUpdatView(LoginRequiredMixin,UpdateView):
     model = Report
     form_class = ReportForm
     context_object_name = 'updateReport'
@@ -95,7 +136,7 @@ class HomeView(FormView):
         return redirect('pform:reportView',production_line=prod_line)
 
 #!SelectView
-class SelectView(FormView):
+class SelectView(LoginRequiredMixin,FormView):
     template_name = 'reports/select.html'
     form_class = ReportResultForm
     success_url = reverse_lazy('pform:mainReportSummary')#yeni session olan seyfeye don oz session deyerinle birlikde
@@ -110,9 +151,14 @@ class SelectView(FormView):
 @login_required
 def main_report_summary(request):
     try:
+        
         #session data
         day = request.session.get('day',None)
         production_line_id = request.session.get('production_line',None)#return id
+        ################################################################################################
+        
+        production_line = ProductionLine.objects.get(id=production_line_id)
+        problem_reports = ProblemReported.objects.get_problems_by_day_and_line(day,production_line)
         print(production_line_id)
         
         #database filtering session data
@@ -132,13 +178,19 @@ def main_report_summary(request):
         # print('Manager yeni oz sorgumuzun deyeri', report_qs_day)
         
     except:
-        pass
+        return redirect('pform:selectView')
     
     context = {
         'day':day,
         'execution_qs':execution_qs,
         'planned_qs':planned_qs,
-        'production_item':production_item
+        'production_item':production_item,
+        'problem_reports':problem_reports
     }
+    
+    #after post request delete session,because other browsers not session cloud
+    del request.session['day']
+    del request.session['production_line']
+    
     
     return render(request,'reports/summary.html',context)

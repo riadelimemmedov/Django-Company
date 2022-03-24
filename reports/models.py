@@ -6,6 +6,7 @@ from categories.models import *
 from products.models import *
 from django.urls import reverse
 from django.db.models import Sum,Avg
+from datetime import datetime
 from areas.models import *
 
 # Create your models here.
@@ -78,7 +79,12 @@ class Report(models.Model):
     
     class Meta:
         ordering = ['-created']
-        
+
+
+
+################################################################################
+
+
 #!Random Code Function
 def random_code():
     random.shuffle(el)
@@ -87,17 +93,30 @@ def random_code():
     return str_code
 random_code()
 
+#!ProblemReportedManager
+
+class ProblemReportedManager(models.Manager):
+    
+    def get_problems_by_day_and_line(self,day,line):
+        return super().get_queryset().filter(report__day=day,report__production_line__name=line)
+
+    def problems_from_today(self):
+        now = datetime.now().strftime('%Y-%m-%d')
+        return super().get_queryset().filter(report__day=now)
+    
 #!ProblemReported Model
 class ProblemReported(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE)#Categroy Model
     description = models.TextField()
     problem_id = models.CharField(max_length=12,unique=True,blank=True,default=random_code)#funksiyani cagirmirsan burda sadece tetikleyirse Js deki eventler kimi
-    breakdown = models.PositiveIntegerField()
+    breakdown = models.PositiveIntegerField()#qoyulan vaxt problem hell etmek ucun
     public = models.BooleanField(default=False)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     report = models.ForeignKey(Report,on_delete=models.CASCADE)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
+    
+    objects = ProblemReportedManager()
     
     def __str__(self):
         return "{}-{}".format(self.category.name,self.description[:20])
