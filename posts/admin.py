@@ -3,9 +3,6 @@ from .forms import *
 from .models import *
 # Register your models here.
 
-class GeneralPostAdmin2(admin.ModelAdmin):
-    form = PostForm
-
 #!GeneralPostAdmin
 class GeneralPostAdmin(admin.ModelAdmin):
     list_display = ['__str__','num_likes','author','created']
@@ -22,4 +19,4 @@ class ProblemPostAdmin(admin.ModelAdmin):
     search_fields = ['author__user__username']
 
 admin.site.register(ProblemPost,ProblemPostAdmin)
-admin.site.register(GeneralPost,GeneralPostAdmin2)#!sonra deyis burani oz classi ver
+admin.site.register(GeneralPost,GeneralPostAdmin)#!sonra deyis burani oz classi ver

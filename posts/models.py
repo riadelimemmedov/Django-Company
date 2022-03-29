@@ -7,6 +7,11 @@ from reports.models import *
 from profiles.models import *
 # Create your models here.
 
+#!PostManager Model Manager
+class PostManager(models.Manager):
+    def public_only(self):
+        return self.filter(problem_reported__public=True)#yeni hamiya acig olan postlari getir bize
+
 #!Post Model
 class Post(models.Model):
     author = models.ForeignKey(Profile,on_delete=models.CASCADE)
@@ -22,6 +27,8 @@ class Post(models.Model):
 class ProblemPost(Post):#bu model tempplatede gorunenden kenarlari mavi rengde gorunecek
     report = models.ForeignKey(Report,on_delete=models.CASCADE)
     problem_reported = models.ForeignKey(ProblemReported,on_delete=models.CASCADE)
+    
+    objects = PostManager()
     
     def __str__(self):
         return '{}'.format(self.problem_reported.description[:50])
