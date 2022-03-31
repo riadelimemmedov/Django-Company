@@ -16,7 +16,7 @@ class PostListCreateView(CreateView):
         qs1 = ProblemPost.objects.public_only()
         qs2 = GeneralPost.objects.all()
         qs = sorted(chain(qs1,qs2),reverse=True,key=lambda obj:obj.created)
-        context = super(PostListCreateView,self).get_context_data(*args,**kwargs)
+        context = super(PostListCreateView,self).get_context_data(*args,**kwargs)#context deyiskeninin yazmagi deyisken kimi tanitmagi unutma ve super yazmagida hemcinin
         context['object_list'] = qs
         return context
         
