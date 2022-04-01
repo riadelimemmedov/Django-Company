@@ -1,6 +1,6 @@
 from django.db import models
+from profiles.models import Profile
 from products.models import *
-from profiles.models import *
 
 # Create your models here.
 

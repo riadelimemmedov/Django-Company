@@ -1,11 +1,16 @@
-from wsgiref.validate import validator
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from reports.models import Report,ProblemReported
+from profiles.models import Profile
 import uuid
 import os
-from reports.models import *
-from profiles.models import *
 # Create your models here.
+
+
+LIKE_CHOICES = (
+    ('Like','Like'),
+    ('Unlike','Unlike')
+)
 
 #!PostManager Model Manager
 class PostManager(models.Manager):
@@ -48,3 +53,15 @@ class GeneralPost(Post):#bu model templatede gorunende kenarlari qirmizi seklind
     
     def __str__(self):
         return str(self.title)
+    
+    
+class Like(models.Model):
+    user = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    value = models.CharField(max_length=50,choices=LIKE_CHOICES,default='Like')
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return str(self.post)
+    

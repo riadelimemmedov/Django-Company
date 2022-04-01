@@ -7,7 +7,7 @@ from products.models import *
 from django.urls import reverse
 from django.db.models import Sum,Avg
 from datetime import datetime
-from areas.models import *
+from areas.models import ProductionLine
 
 # Create your models here.
 
