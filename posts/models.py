@@ -54,7 +54,7 @@ class GeneralPost(Post):#bu model templatede gorunende kenarlari qirmizi seklind
     def __str__(self):
         return str(self.title)
     
-    
+#!Like Model
 class Like(models.Model):
     user = models.ForeignKey(Profile,on_delete=models.CASCADE)
     post = models.ForeignKey(Post,on_delete=models.CASCADE)

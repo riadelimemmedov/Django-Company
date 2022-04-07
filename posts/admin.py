@@ -13,10 +13,11 @@ class GeneralPostAdmin(admin.ModelAdmin):
 
 class ProblemPostAdmin(admin.ModelAdmin):
     list_display = ['__str__','num_likes','author','created']
-    fields = ['author','report','problem_reported']
+    fields = ['author','report','problem_reported','liked']
     list_display_links = ['__str__','author']
     list_filter = ['created']
     search_fields = ['author__user__username']
 
 admin.site.register(ProblemPost,ProblemPostAdmin)
 admin.site.register(GeneralPost,GeneralPostAdmin)#!sonra deyis burani oz classi ver
+admin.site.register(Like)
