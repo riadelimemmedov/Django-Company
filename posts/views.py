@@ -4,11 +4,12 @@ from itertools import chain
 from .models import *
 from .forms import *
 from profiles.models import *
+from .mixins import *
 from django.views.generic import *
 # Create your views here.
 
 #!PostListCreateView
-class PostListCreateView(CreateView):
+class PostListCreateView(FormUserRequiredMixin,CreateView):#createView den istifade etdiyimiz ucun yeni miras aldigimiz ucun pramoy uje post yaratma prosesi gedir burda
     template_name = 'posts/post-create-list.html'
     form_class = PostForm
     success_url = reverse_lazy('posts:post-list-create')
