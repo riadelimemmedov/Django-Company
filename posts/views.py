@@ -1,12 +1,27 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from itertools import chain
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from .forms import *
 from profiles.models import *
 from .mixins import *
 from django.views.generic import *
 # Create your views here.
+
+#!ProblemDetailPost
+class ProblemDetailPost(LoginRequiredMixin,DetailView):
+    model = ProblemPost
+    template_name = 'posts/post-detail.html'
+    pk_url_kwarg = 'pk1'#functio based with as pk in at second parametr pass in functio get url id
+    
+
+#!GeneralPostDetail
+class GeneralPostDetail(LoginRequiredMixin,DetailView):
+    model = GeneralPost
+    template_name = 'posts/post-detail.html'
+
+
 
 #!PostListCreateView
 class PostListCreateView(FormUserRequiredMixin,CreateView):#createView den istifade etdiyimiz ucun yeni miras aldigimiz ucun pramoy uje post yaratma prosesi gedir burda

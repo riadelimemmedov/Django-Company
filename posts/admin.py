@@ -21,3 +21,4 @@ class ProblemPostAdmin(admin.ModelAdmin):
 admin.site.register(ProblemPost,ProblemPostAdmin)
 admin.site.register(GeneralPost,GeneralPostAdmin)#!sonra deyis burani oz classi ver
 admin.site.register(Like)
+admin.site.register(Comment)

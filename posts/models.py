@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 from reports.models import Report,ProblemReported
 from profiles.models import Profile
+from django.urls import reverse
 import uuid
 import os
 # Create your models here.
@@ -37,6 +38,9 @@ class ProblemPost(Post):#bu model tempplatede gorunenden kenarlari mavi rengde g
     
     def __str__(self):
         return '{}'.format(self.problem_reported.description[:50])
+    
+    def get_absolute_url(self):
+        return reverse('posts:pp-detail',kwargs={'pk1':self.pk,'pk':self.problem_reported.id})
 
 
 #*get_upload_path
@@ -54,6 +58,9 @@ class GeneralPost(Post):#bu model templatede gorunende kenarlari qirmizi seklind
     def __str__(self):
         return str(self.title)
     
+    def get_absolute_url(self):
+        return reverse('posts:gp-detail',kwargs={'pk':self.pk})
+    
 #!Like Model
 class Like(models.Model):
     user = models.ForeignKey(Profile,on_delete=models.CASCADE)
@@ -64,4 +71,17 @@ class Like(models.Model):
     
     def __str__(self):
         return str(self.post)
+
+#!Comment
+class Comment(models.Model):
+    user = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    post = models.ForeignKey(GeneralPost,on_delete=models.CASCADE)
+    body = models.TextField(max_length=400)
+    created = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return "{}".format(str(self.pk))
+    
+    class Meta:
+        ordering = ['-created']
+        

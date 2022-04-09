@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Post Details {% endblock title %}
+
+{% block content %}
+    <!-- Eger ListView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object_list adli deyiskene atir -->
+    <!-- Eger DetailView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object adli deyiskene atir -->
+    <h1 class="text-dark">{{object.author}}</h1>
+    {% if object.report %}
+        <h1 class="text-primary">Report</h1>
+    {% else %}
+        <h1 class="text-danger">No Report</h1>
+    {% endif %}
+{% endblock content %}

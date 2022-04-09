@@ -22,3 +22,11 @@ class PostForm(forms.ModelForm):#eger forms.Form yazsagdig sifirdan her bir setr
             #raise ValidationError('Description Errror Short Lenght')
         #else kimidir bura yeni
         return desc
+
+#!CommentForm
+class CommentForm(forms.ModelForm):
+    body = forms.CharField(label='',widget=forms.Textarea(attrs={'rows':'4','placeholder':'Your Comment'}))#widget yerine girdinse demeli uje html yazirsan kimi bir seydi diqqetli ol burda
+    
+    class Meta:
+        model = Comment
+        fields = ['body']
