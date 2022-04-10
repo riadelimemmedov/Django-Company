@@ -1,15 +1,108 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %} Post Details {% endblock title %}
 
+
+
 {% block content %}
-    <!-- Eger ListView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object_list adli deyiskene atir -->
-    <!-- Eger DetailView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object adli deyiskene atir -->
-    <h1 class="text-dark">{{object.author}}</h1>
-    {% if object.report %}
-        <h1 class="text-primary">Report</h1>
-    {% else %}
-        <h1 class="text-danger">No Report</h1>
-    {% endif %}
+
+<!-- Inlie Css For Report Data Table-->
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-spacing:0;}
+    .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+    .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+    .tg .tg-ve35{border-color:#c0c0c0;text-align:left;vertical-align:middle}
+    .tg .tg-wo29{border-color:#c0c0c0;text-align:left;vertical-align:top}
+</style>
+<!-- Eger ListView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object_list adli deyiskene atir -->
+<!-- Eger DetailView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object adli deyiskene atir -->
+
+<br>
+<div class="col-9 mx-auto">
+    <div class="bg-white p-4 rounded">
+        {% if object.report %}
+                <table class="tg">
+                    <tr>
+                        <th class="tg-ve35">Author</th>
+                        <th class="tg-wo29">{{ object.author }}</th>
+                    </tr>
+                    <tr>
+                        <td class="tg-wo29">Day</td>
+                        <td class="tg-wo29">{{ object.report.day }}</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-wo29">Hour from</td>
+                        <td class="tg-wo29">{{ object.report.start_hour }}</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-wo29">Hour to</td>
+                        <td class="tg-wo29">{{ object.report.end_hour }}</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-wo29">Product / Production Line</td>
+                        <td class="tg-wo29">{{ object.report.product }} / {{object.report.production_line}}</td>
+                    </tr>
+                    <tr>
+                        <td class="tg-wo29">Plan / Execution</td>
+                        <td class="tg-wo29">{{ object.report.plan }} / {{object.report.execute}}</td>
+                    </tr>
+                </table>
+                <br>
+                <strong>{{object.problem_reported.category}}</strong>
+                <br>
+                <small class="text-muted">{{object.problem_reported.problem_id}}</small>
+                <br>
+                Cost : {{object.problem_reported.breakdown}} min
+        {% else %}
+            {% if object.image %}
+                <div class="mb-3">
+                    <img src="{{object.image.url}}" alt="">
+                </div>
+            {% endif %}
+                <h5>{{object.title}}</h5>
+                <p>{{object.description}}</p>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-2">
+                <a href="{% url 'posts:post-list-create' %}">
+                    <button class="btn btn-warning">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to board
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <br>
+        {% if not object.report %}
+            <h3>Share Your Thoughts</h3>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button class="btn btn-primary" type="submit">Add Comment</button><!-- Eger form icinde buton yazirsansa ve bu form post request atirsan form icinde yazilan butonun type deyeri mutleq sekilde submit olmalidir => type='submit' </button> -->
+            </form>
+            <br>
+            {% for c in object.comment_set.all %}<!-- bur cur yazilisa reverse relation ship deyirler yeni contrary relationship ve ya reverse relation ship -->
+                <div class="card p-3 my-2">
+                    <div class="row">
+                        <div class="col-2">Avatar</div>
+                        <div class="col-8">
+                            <div class="text-muted small mb-1">
+                                {{c.user}} | {{c.created|timesince}} ago
+                            </div>
+                            <div>
+                                {{c.body}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
+
 {% endblock content %}

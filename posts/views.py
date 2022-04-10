@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render,get_object_or_404
 from django.urls import reverse_lazy
 from itertools import chain
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -20,8 +20,32 @@ class ProblemDetailPost(LoginRequiredMixin,DetailView):
 class GeneralPostDetail(LoginRequiredMixin,DetailView):
     model = GeneralPost
     template_name = 'posts/post-detail.html'
+    
+    #?Returns the single object that this view will display
+    def get_object(self,*args,**kwargs):#yeni objecte get,tut onu,al yeni
+        pk = self.kwargs.get('pk')
+        post_ = get_object_or_404(GeneralPost,pk=pk)
+        return post_
 
+    #?Return context data at template tha is html template
+    def get_context_data(self,**kwargs):
+        context = super(GeneralPostDetail,self).get_context_data(**kwargs)
+        context['form'] = CommentForm()
+        return context
 
+    def post(self,*args,**kwargs):
+        profile = Profile.objects.get(user=self.request.user)
+        post_ = self.get_object()
+        form = CommentForm(self.request.POST or None)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = profile
+            instance.post = post_
+            instance.body = form.cleaned_data.get('body')
+            form.save()
+            #after save form redirect previous page redirect url => self.request.META.get('HTTP_REFERER') WITH
+        return redirect(self.request.META.get('HTTP_REFERER'))#ozunden evvelki seyfeye donur
+    
 
 #!PostListCreateView
 class PostListCreateView(FormUserRequiredMixin,CreateView):#createView den istifade etdiyimiz ucun yeni miras aldigimiz ucun pramoy uje post yaratma prosesi gedir burda
