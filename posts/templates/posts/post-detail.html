@@ -10,14 +10,34 @@
 
 <!-- Inlie Css For Report Data Table-->
 <style type="text/css">
+    
     .tg  {border-collapse:collapse;border-spacing:0;}
     .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
     .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
     .tg .tg-ve35{border-color:#c0c0c0;text-align:left;vertical-align:middle}
     .tg .tg-wo29{border-color:#c0c0c0;text-align:left;vertical-align:top}
+
+    .show{
+        display: none;
+    }
+
+    #comments{
+        cursor: pointer;
+    }
+
 </style>
 <!-- Eger ListView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object_list adli deyiskene atir -->
 <!-- Eger DetailView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object adli deyiskene atir -->
+
+<!-- Inline Js -->
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#comments').click(function(){
+                $('#comment-box').toggle('slow')
+            })
+        })
+    </script>
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
 
 <br>
 <div class="col-9 mx-auto">
@@ -65,8 +85,9 @@
                 <p>{{object.description}}</p>
         {% endif %}
 
-        <div class="row">
-            <div class="col-2">
+        <div class="row container text-center">
+
+            <div class="my-3">
                 <a href="{% url 'posts:post-list-create' %}">
                     <button class="btn btn-warning">
                         <i class="fas fa-arrow-left mr-2"></i>
@@ -74,32 +95,55 @@
                     </button>
                 </a>
             </div>
+
+            {% if not object.report and object.author.user == request.user %}
+                <div class="my-3">
+                    <a href="{% url 'posts:gp-delete' object.pk %}">
+                        <button class="btn btn-danger h-100 ml-2">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </a>
+                </div>
+            {% endif %}
+
         </div>
 
         <br>
         {% if not object.report %}
             <h3>Share Your Thoughts</h3>
-            <form action="" method="POST">
+            <form action="" method="POST" class="mb-3">
                 {% csrf_token %}
                 {{form|crispy}}
                 <button class="btn btn-primary" type="submit">Add Comment</button><!-- Eger form icinde buton yazirsansa ve bu form post request atirsan form icinde yazilan butonun type deyeri mutleq sekilde submit olmalidir => type='submit' </button> -->
             </form>
+            <div id="comments">
+                All Comments ({{object.comments.all.count}})
+            </div>
             <br>
-            {% for c in object.comment_set.all %}<!-- bur cur yazilisa reverse relation ship deyirler yeni contrary relationship ve ya reverse relation ship -->
-                <div class="card p-3 my-2">
-                    <div class="row">
-                        <div class="col-2">Avatar</div>
-                        <div class="col-8">
-                            <div class="text-muted small mb-1">
-                                {{c.user}} | {{c.created|timesince}} ago
-                            </div>
-                            <div>
-                                {{c.body}}
+            <!-- {d% for c in object.comment_set.all %d} bur cur yazilisa reverse relation ship deyirler yeni contrary relationship ve ya reverse relation ship -->
+            <div id="comment-box" class="show">
+                {% if object.comments.all %}
+                    {% for c in object.comments.all %}<!-- burda ise related_name ile yazarag getirdik yazilan posta uygun datalari -->
+                        <div class="card p-3 my-2">
+                            <div class="row">
+                                <div class="col-2">
+                                    <img src="{{c.user.profile_picture.url}}" width="60" height="60" class="rounded-circle border" alt="">
+                                </div>
+                                <div class="col-8">
+                                    <div class="text-muted small mb-1">
+                                        {{c.user}} | {{c.created|timesince}} ago
+                                    </div>
+                                    <div>
+                                        {{c.body}}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <h1>No Comments Yet</h1>
+                {% endif %}
+            </div>
         {% endif %}
 
     </div>

@@ -1,4 +1,8 @@
 {% load static %}
+{% url 'pform:homeView' as path_home %}
+{% url 'posts:post-list-create' as path_board %}
+{% url 'pform:selectView' as path_select %}
+{% url 'profiles:profileView' as path_profiles %}<!-- ? as ile adini deyise bilirsen gelen datanin djangoda,cox frameworde beledir bu,esasen databaseye baglidir bu hadise -->
 
 <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary font-q fixed-top py-3">
     <div class="container">
@@ -10,23 +14,20 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'pform:homeView' %}">Home</a>
+                    <a class="nav-link {% if request.path == path_home %}active{% endif %}" href="{{path_home}}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'posts:post-list-create' %}">Board</a>
+                    <a class="nav-link {% if request.path == path_board %}active{% endif %}" href="{{path_board}}">Board</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'pform:selectView' %}">Get report</a>
+                    <a class="nav-link {% if request.path == path_select %}active{% endif %}" href="{{path_select}}">Get report</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'pform:mainReportSummary' %}">Todays PDF</a>
-                </li>        
             </ul>
 
             <ul class="navbar-nav">
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="" class="nav-link">
+                        <a href="{{path_profiles}}" class="nav-link {% if request.path == path_profiles %} active {% endif %}">
                             <img src="{{picprofile.url}}" class="img-avatar" style="height:35px;width:35px;border-radius: 50%;" alt="profile picture">
                             <span class="ml-2">{{request.user}}</span>
                         </a>

@@ -45,7 +45,20 @@ class GeneralPostDetail(LoginRequiredMixin,DetailView):
             form.save()
             #after save form redirect previous page redirect url => self.request.META.get('HTTP_REFERER') WITH
         return redirect(self.request.META.get('HTTP_REFERER'))#ozunden evvelki seyfeye donur
+
+#!GeneralPostDeleteView
+class GeneralPostDeleteView(LoginRequiredMixin,DeleteView):
+    model = GeneralPost
+    template_name = 'posts/confirm.html'
+    success_url = reverse_lazy('posts:post-list-create')
     
+    #get_object yazmaliyig cunki tiklanan posta avtomatik olarag gedib confirmation message gosterir => DeleteView class based view icinde gelen DeleteView
+    def get_object(self,*args,**kwargs):
+        obj = super(GeneralPostDeleteView,self).get_object(*args,**kwargs)#cunki DeleteView avtomatik olarag tiklanan postun ozunu donderir classda object olaraq
+        if not obj.author.user == self.request.user:
+            raise ValueError('You have to be the owner of this post to delete it')
+        #else
+        return obj
 
 #!PostListCreateView
 class PostListCreateView(FormUserRequiredMixin,CreateView):#createView den istifade etdiyimiz ucun yeni miras aldigimiz ucun pramoy uje post yaratma prosesi gedir burda
@@ -65,7 +78,7 @@ class PostListCreateView(FormUserRequiredMixin,CreateView):#createView den istif
     #!?oldugun seyfeye geri donmek ucun deg get_success_url lerden istifade olunur
     # def get_success_url(self):
     #     return self.request.path
-    
+
 def like_unlike_post(request):
     user = request.user
     profile = Profile.objects.get(user=user)
