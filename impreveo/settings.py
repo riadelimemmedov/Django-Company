@@ -38,8 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     #third party apps
     'crispy_forms',
+    # The following apps are required:
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     
     #our apps
     'profiles',
@@ -49,6 +54,21 @@ INSTALLED_APPS = [
     'categories',
     'posts',
 ]
+
+SITE_ID = 1
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login'
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+#ACCOUNT_SIGNUP_FORM_CLASS
+ACCOUNT_SIGNUP_FORM_CLASS = 'impreveo.forms.CustomSignUpForm'
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,6 +99,11 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'impreveo.wsgi.application'

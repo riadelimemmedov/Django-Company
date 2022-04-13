@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('profile/',include('profiles.urls',namespace='profiles')),
     path('',include('reports.urls',namespace='pform')),
-    path('posts/',include('posts.urls',namespace='posts'))
+    path('posts/',include('posts.urls',namespace='posts')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
