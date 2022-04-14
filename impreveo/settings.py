@@ -180,3 +180,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #activate virtualenv => env/Scripts/activate
 #eger admin panelinde colomlarin rengi bold fontundadirsa onda bu columlarin row deyerleri teleb olunur,yox eger blank=True yazmisansa teleb olunmur
 
+#Salam bura neyse company django
