@@ -4,10 +4,6 @@
 
 {% block title %}Select A Day{% endblock title %}
 
-
-
-
-
 {% block content %}
     
     <!-- !Jquery Ui Cdn -->
@@ -26,7 +22,7 @@
         <form action="" method="POST" class="form-control" autocomplete="off">
             {% csrf_token %}
             {{form|crispy}}
-            <button type="submit" class="btn btn-primary">Submit</button><!-- eger form icerisinde buton yazirsansa ve bu formun method deyeri POST dursa form icersidine mutleq sekilde butonun type deyeri submit olmalidir -->
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
     <script>

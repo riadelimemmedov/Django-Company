@@ -11,7 +11,7 @@
             <form action="" class="form-control" method="POST">
                 <div class="text-muted h5 mb-2">Select a production line to begin</div>
                 {% csrf_token %}
-                {{form|crispy}}<!-- defaultdaki form deyeridiri yeni form kimi qeyd eleyir django template gelendeki datani -->
+                {{form|crispy}}
                 <input type="hidden" name="prod_line" id="productionlineId">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

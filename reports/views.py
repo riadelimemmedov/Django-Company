@@ -14,42 +14,6 @@ from .models import *
 
 # Create your views here.
 
-#!get_generated_problems_in_pdf
-# def get_generated_problems_in_pdf(request):
-    
-#     # queryset
-#     problems = ProblemReported.objects.problems_from_today()
-
-#     # context passed in the template
-#     context = {'problems': problems}
-
-#     # render
-#     html_string = render_to_string(
-#         'reports/problems.html',context)
-#     html = HTML(string=html_string)
-#     result = html.write_pdf()
-
-#     # http response
-#     import os
-
-#     os.add_dll_directory(r"C:\Program Files\GTK3-Runtime Win64\bin")
-
-#     from weasyprint import HTML
-
-#     HTML('https://weasyprint.org/').write_pdf('weasyprint-website.pdf')
-#     response = HttpResponse(content_type='application/pdf;')
-#     response['Content-Disposition'] = 'inline; filename=problem_list.pdf'
-#     response['Content-Transfer-Encoding'] = 'binary'
-#     with tempfile.NamedTemporaryFile(delete=True) as output:
-#         output.write(result)
-#         output.flush()
-#         output = open(output.name, 'rb')
-#         response.write(output.read())
-
-#     return response
-
-
-
 #!ReportView
 @login_required
 def reportView(request,production_line):
@@ -57,8 +21,8 @@ def reportView(request,production_line):
     print('Production Line',production_line)
     print('################################')
     
-    pform = ProblemReportedForm(request.POST or None)#request.POST or None sonra yazarsan yeniden bunu amma helelik diger form ustunde isleyirik ona gore silindi mecbur cunki djangoda 1 view icerisinde 1 dene form isleye biler amma yollari var coxlu form isletmeyinde
-    reports = Report.objects.filter(production_line__name=production_line)#yeni hemin mal haqqinda gelen reportlari getir mene
+    pform = ProblemReportedForm(request.POST or None)
+    reports = Report.objects.filter(production_line__name=production_line)
     
     #?Problem Write
     if 'submitbtn1' in request.POST:
@@ -75,7 +39,6 @@ def reportView(request,production_line):
             obj.save()  
             return redirect(request.META.get('HTTP_REFERER'))
             
-            #requestden sonra formlarin sifirlamalisanki diger formu isledende yeni submit filan olanda diger formdaki qalan input yerleir ile toqqusmasin
             #reset form after request
             # rform = ReportForm()
             # pform = ProblemReportedForm()
@@ -121,7 +84,6 @@ class ReportUpdatView(LoginRequiredMixin,UpdateView):
     def get_success_url(self):
         return self.request.path
 
-#!HomeView Giris eden userin ProductionLine gosterir ancag ve axtaris etmek olur
 class HomeView(FormView):
     template_name = 'reports/home.html'
     form_class = ReportSelectLineForm
@@ -139,11 +101,11 @@ class HomeView(FormView):
 class SelectView(LoginRequiredMixin,FormView):
     template_name = 'reports/select.html'
     form_class = ReportResultForm
-    success_url = reverse_lazy('pform:mainReportSummary')#yeni session olan seyfeye don oz session deyerinle birlikde
+    success_url = reverse_lazy('pform:mainReportSummary')
     
     def form_valid(self,form):
         self.request.session['day'] = self.request.POST.get('day',None)
-        self.request.session['production_line'] = self.request.POST.get('production_line',None)#burdaki deyer crispy formdan gelir
+        self.request.session['production_line'] = self.request.POST.get('production_line',None)
         print('My session date', self.request.session['day'])
         return super(SelectView,self).form_valid(form)
 
@@ -168,14 +130,6 @@ def main_report_summary(request):
         
         print(execution_qs)
         print(planned_qs)
-        
-        #report_qs_day = Report.objects.filter_by_day_prodid(day)
-        #execution_agg = Report.objects.aggregate_execution().get('execute__sum')
-        # print('Execution Agg',execution_agg)
-        
-        # print('Day',report_qs_day)
-        
-        # print('Manager yeni oz sorgumuzun deyeri', report_qs_day)
         
     except:
         return redirect('pform:selectView')

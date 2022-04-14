@@ -2,7 +2,7 @@ from tkinter.filedialog import test
 from django.urls import path
 from .views import *
 
-app_name = 'profiles' #app_nem deyeri beraberdi root urlde olan namespace deyerine
+app_name = 'profiles'
 
 urlpatterns = [
     path('',profileView,name='profileView'),

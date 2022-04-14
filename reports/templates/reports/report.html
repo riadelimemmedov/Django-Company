@@ -28,7 +28,7 @@
                 </div>  
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="submitbtn1" class="btn btn-primary">Send</button><!-- eger form icinde button yazirsansa ve bu formun method deyeri POST dursa bu formu gondermek ucun lazim olan butonun type deyeri mutleq sekilde submit olmalidir yeni => type="submit" -->
+                    <button type="submit" name="submitbtn1" class="btn btn-primary">Send</button>
                 </div>
             </form>
             <!-- !xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
@@ -49,7 +49,7 @@
                     <button type="submit" name="submitbtn2" class="btn btn-primary w-100 shadow-sm mt-3">
                         <i class="far fa-paper-plane pr-3"></i>
                         Send
-                    </button><!-- eger form icinde buton yazirsansa bu butonun type deyeri mutleq sekilde submit olmalidir cunki form ile data gonderilir,yadda saxla form icinde buton yazilirsa ve formun method deyeri POST dursa bu zamannin butonun type deyeri submit olmalidir -->
+                    </button>
                 </form>
             </div>
             <!-- !xxxxxxxxxxxxxxxxxxxxxxxxx -->
@@ -128,7 +128,7 @@
 
     <script>
         $('.open-modal').on('click',function(){
-            const r_id = $(this).attr('data-url')//this yazilmasindaki sebeb tikladigim butonun id deyerini almag dir
+            const r_id = $(this).attr('data-url')
             $('#report_id').val(r_id)
             console.log(r_id)
             

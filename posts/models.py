@@ -16,7 +16,7 @@ LIKE_CHOICES = (
 #!PostManager Model Manager
 class PostManager(models.Manager):
     def public_only(self):
-        return self.filter(problem_reported__public=True)#yeni hamiya acig olan postlari getir bize
+        return self.filter(problem_reported__public=True)
 
 #!Post Model
 class Post(models.Model):
@@ -25,12 +25,12 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
-    @property# => burda yeni funksiyanin ustunde => @property decoratorundan istifade olunmasindaki sebeb biz yazilan funksiyani cagiranda () acmag kimi yox deyisken kimi istifade etmek isteyirik ona gorede => @property decoratorlarindan istifade olunur
+    @property
     def num_likes(self):
         return self.liked.all().count()
 
 #!ProblemPost Model 
-class ProblemPost(Post):#bu model tempplatede gorunenden kenarlari mavi rengde gorunecek
+class ProblemPost(Post):
     report = models.ForeignKey(Report,on_delete=models.CASCADE)
     problem_reported = models.ForeignKey(ProblemReported,on_delete=models.CASCADE)
     
@@ -45,12 +45,12 @@ class ProblemPost(Post):#bu model tempplatede gorunenden kenarlari mavi rengde g
 
 #*get_upload_path
 def get_upload_path(instance,filename):
-    ext = filename.split('.')[-1]#yeni noqteye gore parcalayib -1 deyerini aliriq yeni sondaki deyerini
+    ext = filename.split('.')[-1]
     filename = '{}.{}'.format(uuid.uuid4(),ext)
     return os.path.join('uploads/posts/img',filename)
 
 #!GeneralPost Model
-class GeneralPost(Post):#bu model templatede gorunende kenarlari qirmizi seklinde gorunecek ve hami bu model ile post yaza biler ve paylasa biler
+class GeneralPost(Post):
     title = models.CharField(max_length=200)
     description = models.TextField(max_length=350)
     image = models.ImageField(blank=True,upload_to=get_upload_path,validators=[FileExtensionValidator(['png', 'jpg', 'jpeg'])])

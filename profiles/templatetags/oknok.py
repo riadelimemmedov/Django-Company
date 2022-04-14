@@ -8,7 +8,7 @@ def oknok(value,value1):
     print(value1)#plan
     
     try:
-        if(value-value1)>=0:#yeni elediyin is verilen plandan coxdursa
+        if(value-value1)>=0:
             return 'OK'
         else:
             return 'Not OK'

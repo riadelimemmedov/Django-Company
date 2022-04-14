@@ -13,12 +13,11 @@
         <form action="{% url 'posts:post-list-create' %}" class="form-control" method="POST" enctype="multipart/form-data" autocomplete="off">
             {% csrf_token %}
             {{form|crispy}}
-            <button type="submit" class="btn btn-primary">Send</button><!-- eger form icinde button yazirsansa ve bu form backendde data gonderirse bu formun method deyeri POST olmalidir ve bu form icinde yazilan butonun type deyeri submit olmalidir yadda saxla => type='submit' -->
+            <button type="submit" class="btn btn-primary">Send</button>
         </form>
 <br>
 
 {% for obj in object_list %}
-    <!-- !Eger gelen post problem report olan bir postdursa if islesin olmasa else girib nested if yazariq -->
         {% if obj.problem_reported %}
             <div class="card card-body mt-3 border border-primary">
                 <small class="text-muted">Author : {{obj.problem_reported.user}} | {{obj.problem_reported.created|timesince}} ago</small>
@@ -37,13 +36,12 @@
                 <h5 class="card-title">{{obj.title}}</h5>
                 <p class="card-text">{{obj.description}}</p>
         {% endif %}
-    <!-- !problem and general post finished -->
             <form action="{% url 'posts:like-unlike-post' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="post_id" value="{{obj.id}}">
                 <div class="row">
                     <div class="col-4">
-                        <button type="submit" class="btn btn-link" style="text-decoration: none;"><!-- eger POST request atirsansa form icinde yazilan butonun type deyeri mutleq sekilde submit olmalidir => yeni type='submit' -->
+                        <button type="submit" class="btn btn-link" style="text-decoration: none;">
                             {% if profile not in obj.liked.all %}
                                 <i class="far fa-thumbs-up"></i>
                                 <span class="ml-2">Like</span>
@@ -57,7 +55,7 @@
             </form>
 
             <div class="col-3">
-                <a href="{{obj.get_absolute_url}}" class="btn btn-primary"><!-- get_absolute_url de deyisken istifade etmek kimi istifade edirse yeni url keyword ehtitac yoxdur =>  icinde qeyd edirsen amma hansi objectde islemeyinede qeyd etmelisen burdaki numunedeki kimi </a> -->
+                <a href="{{obj.get_absolute_url}}" class="btn btn-primary">
                     <span class="ml-2">
                         <i class="fas fa-search"></i>
                     Details</span>

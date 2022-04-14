@@ -7,6 +7,6 @@ def subtract(value,value1):
     print(value)#execution
     print(value1)#plan
     try:
-        return value - value1#yeni gorduyum is sayi, cixilsin verilen plandaki is sayi
+        return value - value1
     except:
         print('Error Subtract')

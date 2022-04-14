@@ -13,7 +13,7 @@ from django.views.generic import *
 class ProblemDetailPost(LoginRequiredMixin,DetailView):
     model = ProblemPost
     template_name = 'posts/post-detail.html'
-    pk_url_kwarg = 'pk1'#functio based with as pk in at second parametr pass in functio get url id
+    pk_url_kwarg = 'pk1'#function based with as pk in at second parametr pass in functio get url id
     
 
 #!GeneralPostDetail
@@ -22,7 +22,7 @@ class GeneralPostDetail(LoginRequiredMixin,DetailView):
     template_name = 'posts/post-detail.html'
     
     #?Returns the single object that this view will display
-    def get_object(self,*args,**kwargs):#yeni objecte get,tut onu,al yeni
+    def get_object(self,*args,**kwargs):
         pk = self.kwargs.get('pk')
         post_ = get_object_or_404(GeneralPost,pk=pk)
         return post_
@@ -44,7 +44,7 @@ class GeneralPostDetail(LoginRequiredMixin,DetailView):
             instance.body = form.cleaned_data.get('body')
             form.save()
             #after save form redirect previous page redirect url => self.request.META.get('HTTP_REFERER') WITH
-        return redirect(self.request.META.get('HTTP_REFERER'))#ozunden evvelki seyfeye donur
+        return redirect(self.request.META.get('HTTP_REFERER'))
 
 #!GeneralPostDeleteView
 class GeneralPostDeleteView(LoginRequiredMixin,DeleteView):
@@ -52,16 +52,14 @@ class GeneralPostDeleteView(LoginRequiredMixin,DeleteView):
     template_name = 'posts/confirm.html'
     success_url = reverse_lazy('posts:post-list-create')
     
-    #get_object yazmaliyig cunki tiklanan posta avtomatik olarag gedib confirmation message gosterir => DeleteView class based view icinde gelen DeleteView
     def get_object(self,*args,**kwargs):
-        obj = super(GeneralPostDeleteView,self).get_object(*args,**kwargs)#cunki DeleteView avtomatik olarag tiklanan postun ozunu donderir classda object olaraq
+        obj = super(GeneralPostDeleteView,self).get_object(*args,**kwargs)
         if not obj.author.user == self.request.user:
             raise ValueError('You have to be the owner of this post to delete it')
-        #else
         return obj
 
 #!PostListCreateView
-class PostListCreateView(FormUserRequiredMixin,CreateView):#createView den istifade etdiyimiz ucun yeni miras aldigimiz ucun pramoy uje post yaratma prosesi gedir burda
+class PostListCreateView(FormUserRequiredMixin,CreateView):
     template_name = 'posts/post-create-list.html'
     form_class = PostForm
     success_url = reverse_lazy('posts:post-list-create')
@@ -70,12 +68,12 @@ class PostListCreateView(FormUserRequiredMixin,CreateView):#createView den istif
         qs1 = ProblemPost.objects.public_only()
         qs2 = GeneralPost.objects.all()
         qs = sorted(chain(qs1,qs2),reverse=True,key=lambda obj:obj.created)
-        context = super(PostListCreateView,self).get_context_data(*args,**kwargs)#context deyiskeninin yazmagi deyisken kimi tanitmagi unutma ve super yazmagida hemcinin
+        context = super(PostListCreateView,self).get_context_data(*args,**kwargs)
         context['object_list'] = qs
         return context
         
     
-    #!?oldugun seyfeye geri donmek ucun deg get_success_url lerden istifade olunur
+    #!?return request path create get_absolute_url with
     # def get_success_url(self):
     #     return self.request.path
 
@@ -92,9 +90,9 @@ def like_unlike_post(request):
     
     like,created = Like.objects.get_or_create(user=profile,post=post_obj)
 
-    print('Created Boolean Value Befere Conditions', created)#eger true dursa avtomatik like save isleyecek if not created serti islemeyecek
+    print('Created Boolean Value Befere Conditions', created)
     
-    if not created:#not created dirsa demeli bu evvelceden var
+    if not created:
         print('Created Deyeri', created)
         if like.value == 'Like':
             like.value = 'Unlike'

@@ -26,8 +26,6 @@
     }
 
 </style>
-<!-- Eger ListView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object_list adli deyiskene atir -->
-<!-- Eger DetailView Istifade edib context_object_name istifade etmirikse django avtomatik olarag context icindeki datalari => object adli deyiskene atir -->
 
 <!-- Inline Js -->
     <script type="text/javascript">
@@ -114,16 +112,15 @@
             <form action="" method="POST" class="mb-3">
                 {% csrf_token %}
                 {{form|crispy}}
-                <button class="btn btn-primary" type="submit">Add Comment</button><!-- Eger form icinde buton yazirsansa ve bu form post request atirsan form icinde yazilan butonun type deyeri mutleq sekilde submit olmalidir => type='submit' </button> -->
+                <button class="btn btn-primary" type="submit">Add Comment</button>
             </form>
             <div id="comments">
                 All Comments ({{object.comments.all.count}})
             </div>
             <br>
-            <!-- {d% for c in object.comment_set.all %d} bur cur yazilisa reverse relation ship deyirler yeni contrary relationship ve ya reverse relation ship -->
             <div id="comment-box" class="show">
                 {% if object.comments.all %}
-                    {% for c in object.comments.all %}<!-- burda ise related_name ile yazarag getirdik yazilan posta uygun datalari -->
+                    {% for c in object.comments.all %}
                         <div class="card p-3 my-2">
                             <div class="row">
                                 <div class="col-2">

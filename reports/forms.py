@@ -5,7 +5,7 @@ from areas.models import *
 from .models import *
 
 #!ReportForm 
-class ReportForm(forms.ModelForm):#modelForm yazilmasindaki sebeb databasedi table cekib bura getireciyik
+class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
         #fields = '__all__'
@@ -14,7 +14,6 @@ class ReportForm(forms.ModelForm):#modelForm yazilmasindaki sebeb databasedi tab
     def __init__(self,*args,**kwargs):
         #print(kwargs)
         production_line = kwargs.pop('production_line',None)
-        #print('bune amkkk',production_line)
         super().__init__(*args,**kwargs)    
         if production_line is not None:
             line = get_object_or_404(ProductionLine,name=production_line)
@@ -29,17 +28,17 @@ class ProblemReportedForm(forms.ModelForm):
 
 #!ReportSelectLineForm
 class ReportSelectLineForm(forms.Form):
-    production_line = forms.ModelChoiceField(queryset=ProductionLine.objects.none(),label=False)#setirdir formdan gosterilen
+    production_line = forms.ModelChoiceField(queryset=ProductionLine.objects.none(),label=False)
     print('Production  Line',production_line)
 
     def __init__(self,logged_user,*args,**kwargs):
         self.user = logged_user
         print('Logged User',self.user)
         super(ReportSelectLineForm,self).__init__(*args,**kwargs)
-        self.fields['production_line'].queryset = ProductionLine.objects.filter(team_leader__user__username = logged_user)#32 setirdeki production_line dir self.fields['production_line'] daki row yeni setir
+        self.fields['production_line'].queryset = ProductionLine.objects.filter(team_leader__user__username = logged_user)
 
 #!ReportResultForm
-class ReportResultForm(forms.Form):#eger forms.Form yazirsansa ancag yazdiginiz setirler gorunecek templatede yeni asagida yazdigimiz production_line ve day setirleri
+class ReportResultForm(forms.Form):
     production_line = forms.ModelChoiceField(queryset=ProductionLine.objects.all())
     day = forms.CharField(widget=forms.DateTimeInput(
         attrs={'class': 'datepicker'}

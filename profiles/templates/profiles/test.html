@@ -3,7 +3,7 @@
 {% block title %} User Authentication {% endblock title %}
 
 {% block content %}
-    <h1 class="ml-3">User : {{profile}}</h1><!-- {{profile}} deyeri viewsde yeni backendde context icinde yazilan key deyerini temsil edir yeni key deyerini qeyd etmelisenki o keye uygun value deyerini tapsin -->
+    <h1 class="ml-3">User : {{profile}}</h1>
 
     <a href="{% url 'profiles:test_view' %}">
         <button class="btn btn-primary mt-5 ml-3" type="button">Test View Redirect</button>

@@ -19,6 +19,6 @@ class ProblemPostAdmin(admin.ModelAdmin):
     search_fields = ['author__user__username']
 
 admin.site.register(ProblemPost,ProblemPostAdmin)
-admin.site.register(GeneralPost,GeneralPostAdmin)#!sonra deyis burani oz classi ver
+admin.site.register(GeneralPost,GeneralPostAdmin)
 admin.site.register(Like)
 admin.site.register(Comment)

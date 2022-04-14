@@ -55,13 +55,13 @@ class ReportManager(models.Manager):
 #!Yeni hesabat verme modelidir bu her hansi bir PRODUCT haqqinda
 class Report(models.Model):
     day = models.DateField(default=timezone.now)
-    start_hour = models.CharField(max_length=2,choices=hours)#yeni bu isi bu saat araliginda gormlelisen kimi  
-    end_hour = models.CharField(max_length=2,choices=hours)#
+    start_hour = models.CharField(max_length=2,choices=hours)  
+    end_hour = models.CharField(max_length=2,choices=hours)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
-    plan = models.PositiveSmallIntegerField() #plan yeni planama yeni meselen 200 dene mal gelmelidir
-    execute = models.PositiveBigIntegerField() #execute etmek yeni icra etmek reportu,execute ise meselen 200 mal gelmelidir amma biz 180 getirmirik hazir elemisik yeni
-    production_line = models.ForeignKey(ProductionLine,on_delete=models.CASCADE) #yeni harda emal olundugunu gosteren yer
+    plan = models.PositiveSmallIntegerField()
+    execute = models.PositiveBigIntegerField()
+    production_line = models.ForeignKey(ProductionLine,on_delete=models.CASCADE)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     
@@ -72,7 +72,7 @@ class Report(models.Model):
         return "{}-{}-{}".format(self.start_hour,self.end_hour,self.production_line)
     
     def get_day(self):
-        return self.day.strftime('%Y/%m/%d')#strftime sayesinde zamani duzeleyirsen yeni neler gorunsun gelen tarix icinde onu qeyd edirsen strftime sayesinde
+        return self.day.strftime('%Y/%m/%d')
     
     def get_absolute_url(self):
         return reverse('pform:reportUpdatView',kwargs={'production_line':self.production_line,'pk':self.pk})
@@ -88,8 +88,8 @@ class Report(models.Model):
 #!Random Code Function
 def random_code():
     random.shuffle(el)
-    code = [str(x) for x in el[:12]]#yeni 12 elemt icinden donsun butun element icinde yox bunun ucunde => el[:12]
-    str_code = ''.join(code)#joini ''.join seklinde yazanda listdeki datta olsun yada ferq elemir neyse yan yana yazir nececi biz sozleri yazmirig ele => ''.join sayesinde
+    code = [str(x) for x in el[:12]]
+    str_code = ''.join(code)
     return str_code
 random_code()
 
@@ -108,8 +108,8 @@ class ProblemReportedManager(models.Manager):
 class ProblemReported(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE)#Categroy Model
     description = models.TextField()
-    problem_id = models.CharField(max_length=12,unique=True,blank=True,default=random_code)#funksiyani cagirmirsan burda sadece tetikleyirse Js deki eventler kimi
-    breakdown = models.PositiveIntegerField()#qoyulan vaxt problem hell etmek ucun
+    problem_id = models.CharField(max_length=12,unique=True,blank=True,default=random_code)
+    breakdown = models.PositiveIntegerField()
     public = models.BooleanField(default=False)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     report = models.ForeignKey(Report,on_delete=models.CASCADE)
