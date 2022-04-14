@@ -170,7 +170,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media_root')
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGIN_URL = '/admin'#yeni butun login requiredlerde url olarag yeni required url olarag setting.py icindeki => LOGIN_URL nin deyeri olmalidir
+LOGIN_URL = '/admin'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -178,6 +178,5 @@ LOGIN_URL = '/admin'#yeni butun login requiredlerde url olarag yeni required url
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #activate virtualenv => env/Scripts/activate
-#eger admin panelinde colomlarin rengi bold fontundadirsa onda bu columlarin row deyerleri teleb olunur,yox eger blank=True yazmisansa teleb olunmur
 
-#Salam bura neyse company django
+
