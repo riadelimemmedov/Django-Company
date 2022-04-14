@@ -5,8 +5,8 @@ class CustomSignUpForm(forms.Form):
     check = forms.BooleanField(
         required=True,
         #label_suffix=':',#label_suffix labellara yeni text elave etmek ucun istifade olunur => label_suffixden
-        label = '',
-        help_text=mark_safe("<span class='ml-1'>I accept terms of </span><a href=http://somerandomlinkwithpricvacypolicy.com/privacy_policy class='text-blue-400 hover:text-blue-800'> privacy policy </a>")
+        label = mark_safe("<span class='ml-1'>I accept terms of </span><a href=http://somerandomlinkwithpricvacypolicy.com/privacy_policy class='text-blue-400 hover:text-blue-800'> privacy policy </a>")
+        #help_text=mark_safe("<span class='ml-1'>I accept terms of </span><a href=http://somerandomlinkwithpricvacypolicy.com/privacy_policy class='text-blue-400 hover:text-blue-800'> privacy policy </a>")
     )
     
     field_order = ['username', 'email','password1','password2','check']

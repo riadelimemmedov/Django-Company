@@ -4,6 +4,7 @@
 
 {% block title %} Report {% endblock title %}
 
+
 {% block content %}
 
     
@@ -37,8 +38,7 @@
     </div>
 
 
-
-    <div class="container bg-white shadow-lg rounded py-2">
+    <div class="container bg-white shadow-lg rounded py-2 mt-4">
         <div class="row">
 
             <!-- !ReportedForm -->
@@ -67,6 +67,7 @@
                                 <th scope="col">Plan</th>
                                 <th scope="col">Execution</th>
                                 <th scope="col">Line</th>
+                                <th scope="col"></th>
                                 <th scope="col">Problems</th>
                                 <th scope="col">Edit</th>
                                 <th scope="col">Delete</th>
@@ -83,6 +84,11 @@
                                     <td>{{report.plan}}</td>
                                     <td>{{report.execute}}</td>
                                     <td>{{report.production_line}}</td>
+                                    <td>
+                                        {% if report.problemreported_set.all %}
+                                            <div class="badge badge-danger">P</div>
+                                        {% endif %}
+                                    </td>
                                     
 
                                     <!-- ?Reported button -->
